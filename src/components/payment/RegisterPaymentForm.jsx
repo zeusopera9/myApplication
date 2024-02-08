@@ -4,6 +4,16 @@ import { Picker } from '@react-native-picker/picker'
 
 const RegisterPaymentForm = () => {
   const [category, setCategory] = useState('Please Select Category');
+  const [amount, setAmount] = useState('');
+  const [isValidAmount, setIsValidAmount] = useState(true);
+
+  const handleAmountChange = (text) => {
+    const numericValue = text.replace(/[^0-9]/g, '');
+    const isValid = /^\d+$/.test(numericValue);
+    setIsValidAmount(isValid);
+    setAmount(numericValue);
+  };
+
   return (
     <View style={StyleSheet.safeArea}>
       <View style={styles.headingContainer}>
@@ -16,8 +26,14 @@ const RegisterPaymentForm = () => {
         )} */}
 
 
-        <Text style={styles.inputLabel}>Amount</Text>
-        <TextInput placeholder='Enter Amount Here' style={styles.inputBox} />
+        <Text style={styles.inputLabel}>Amount (₹)</Text>
+        <TextInput 
+          placeholder='Enter Amount Here' 
+          style={[styles.inputBox, !isValidAmount && styles.inputBoxError]} 
+          keyboardType='numeric'
+          onChangeText={handleAmountChange}
+          value={amount}
+        />
 
         <Text style={styles.inputLabel}>Category</Text>
         <Picker

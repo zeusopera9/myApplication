@@ -31,12 +31,13 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     padding: 8,
     paddingVertical: 0,
     marginTop: 5,
   },
   paymentComponentsContainer: {
-    flex: 1,
+    flex: 0.5,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: 'black',
