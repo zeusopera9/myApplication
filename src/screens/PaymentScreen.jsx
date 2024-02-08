@@ -4,12 +4,17 @@ import RegisterPaymentForm from '../components/RegisterPaymentForm'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import PaymentButton from '../components/PaymentButton'
 
-const PaymentScreen = () => {
+const PaymentScreen = ({navigation}) => {
+  const onPress = () => {
+    navigation.navigate("Home")
+    // Change this to payment confirmation
+    // After adding Verification feature
+  }
   return (
     <SafeAreaView style={styles.safeArea}>
       <View>
         <RegisterPaymentForm />
-        <PaymentButton />
+        <PaymentButton onPress={onPress} />
       </View>
     </SafeAreaView>
   )

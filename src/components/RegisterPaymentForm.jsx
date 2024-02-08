@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Picker } from '@react-native-picker/picker'
 
 const RegisterPaymentForm = () => {
-  const [category, setCategory] = useState('Others');
+  const [category, setCategory] = useState('Please Select Category');
   return (
     <View style={StyleSheet.safeArea}>
       <View style={styles.headingContainer}>
@@ -11,6 +11,9 @@ const RegisterPaymentForm = () => {
       </View>
       <View style={styles.formContainer}>
         <Text style={styles.formHeading}>Enter Details</Text>
+        {category !== "Please Select Category" && (
+          <Text>Paying under {category}</Text>
+        )}
 
 
         <Text style={styles.inputLabel}>Amount</Text>
@@ -21,6 +24,9 @@ const RegisterPaymentForm = () => {
           selectedValue={category}
           onValueChange={currentCategory => setCategory(currentCategory)}
         >
+          {category === 'Please Select Category' && (
+            <Picker.Item label="Please Select Category" value="Please Select Category" enabled={false} />
+          )}
           <Picker.Item label="Food" value="Food" />
           <Picker.Item label="Groceries" value="Groceries" />
           <Picker.Item label="Health Care" value="Health Care" />
@@ -28,7 +34,9 @@ const RegisterPaymentForm = () => {
           <Picker.Item label="Personal Care" value="Personal Care" />
           <Picker.Item label="Transportation Care" value="Transportation Cost" />
         </Picker>
-        <Text>Selected: {category}</Text>
+        {category !== "Please Select Category" && (
+          <Text>Selected: {category}</Text>
+        )}
       </View>
     </View>
   )
@@ -49,11 +57,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   formContainer: {
-    borderColor: 'blue',
-    borderWidth: 1,
-    borderRadius: 5,
-    margin: 0,
-    padding: 30,
+    
   },
   formHeading: {
     color: 'black',
