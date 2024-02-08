@@ -12,7 +12,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Home Page'}} />
-        <Stack.Screen name="Payment" component={PaymentScreen} />
+        <Stack.Screen name="Payment" component={PaymentScreen} options={{ title: 'Payment Registration Page'}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

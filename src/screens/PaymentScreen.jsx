@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import RegisterPaymentForm from '../components/RegisterPaymentForm'
+import RegisterPaymentForm from '../components/payment/RegisterPaymentForm'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import PaymentButton from '../components/PaymentButton'
+import PaymentButton from '../components/payment/PaymentButton'
 
 const PaymentScreen = ({navigation}) => {
   const onPress = () => {
@@ -12,7 +12,7 @@ const PaymentScreen = ({navigation}) => {
   }
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View>
+      <View style={styles.paymentComponentsContainer}>
         <RegisterPaymentForm />
         <PaymentButton onPress={onPress} />
       </View>
@@ -33,6 +33,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 8,
     paddingVertical: 0,
-    marginTop: 15,
+    marginTop: 5,
   },
+  paymentComponentsContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: 'black',
+    borderWidth: 1,
+    padding: 20,
+    width: 350,
+    margin: 10,
+  }
 })

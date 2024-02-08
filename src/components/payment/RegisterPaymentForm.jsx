@@ -11,9 +11,9 @@ const RegisterPaymentForm = () => {
       </View>
       <View style={styles.formContainer}>
         <Text style={styles.formHeading}>Enter Details</Text>
-        {category !== "Please Select Category" && (
+        {/* {category !== "Please Select Category" && (
           <Text>Paying under {category}</Text>
-        )}
+        )} */}
 
 
         <Text style={styles.inputLabel}>Amount</Text>

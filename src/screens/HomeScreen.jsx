@@ -1,7 +1,7 @@
 import { Button, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import Details from '../components/Details'
-import ClickableButton from '../components/ClickableButton'
+import Details from '../components/home/Details'
+import ClickableButton from '../components/home/ClickableButton'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const HomeScreen = ({navigation}) => {

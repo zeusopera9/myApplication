@@ -5,7 +5,7 @@ const PaymentButton = ({onPress}) => {
   return (
     <View>
       {/* <Text>PaymentButton</Text> */}
-      <View >
+      <View style={styles.buttonContainer} >
       <Pressable style={styles.paymentButton} onPress={onPress} >
         <Text style={styles.paymentText}>Proceed to Register Payment</Text>
       </Pressable>
@@ -28,6 +28,6 @@ const styles = StyleSheet.create({
   },
   paymentText: {
     color: 'white',
-  }
+  },
 
 })
