@@ -1,7 +1,7 @@
-import { createRealmContext } from '@realm/react';
+// src/models/User.js
 import Realm from 'realm';
 
-export class User extends Realm.Object {}
+class User extends Realm.Object {}
 User.schema = {
   name: 'User',
   primaryKey: 'id',
@@ -16,6 +16,4 @@ User.schema = {
   },
 };
 
-export const RealmContext = createRealmContext({
-  schema: [User],
-})
+export default User;

@@ -1,17 +1,36 @@
-import { StyleSheet, Text, View, Button } from 'react-native'
+import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native'
 import React from 'react'
 
 
-const ClickableButton = ({onPress}) => {
+const ClickableButton = ({onPress, title}) => {
   return (
-    <View>
-      <Button
-        title="Add an Expense" onPress={onPress}
-      />
+    <View style={styles.button}>
+      <TouchableOpacity 
+        onPress={onPress}
+        style={styles.addExpenseButton}
+      >
+        <Text style={styles.buttonText}>{title}</Text>
+      </TouchableOpacity>
     </View>
   )
 }
 
 export default ClickableButton
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  button: {
+    margin: 10,
+    padding: 8,
+  },
+  addExpenseButton: {
+    backgroundColor: 'white',
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 5,
+  },
+  buttonText: {
+    padding: 8,
+    fontSize: 16,
+    color: 'black',
+  }
+})

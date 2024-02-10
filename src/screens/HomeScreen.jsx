@@ -5,9 +5,18 @@ import ClickableButton from '../components/home/ClickableButton'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const HomeScreen = ({navigation}) => {
-  const onPressHandler = () => {
+  const navigateToPayment = () => {
     navigation.navigate('Payment')
   }
+
+  const navigateToAddUser = () => {
+    navigation.navigate('Add User')
+  }
+
+  const navigateToViewUsers = () => {
+    navigation.navigate('View Users')
+  }
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -17,7 +26,9 @@ const HomeScreen = ({navigation}) => {
             userName="Zaidali" 
             familyName="Merchant" 
           />
-          <ClickableButton style={styles.containerButton} onPress={onPressHandler}/>
+          <ClickableButton title="Add an Expense" onPress={navigateToPayment}/>
+          <ClickableButton title="Add a User" onPress={navigateToAddUser}/>
+          <ClickableButton title="View all Users" onPress={navigateToViewUsers}/>
         </View>
       </View>
     </SafeAreaView>
@@ -55,8 +66,5 @@ const styles = StyleSheet.create({
     // borderColor: 'black',
     // borderWidth: 2,
     paddingVertical: 0,
-},
-  containerButton: {
-    
 },
 })
