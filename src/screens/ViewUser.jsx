@@ -14,11 +14,15 @@ const ViewUser = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>List of Users</Text>
-      {sortedUsers.map(user => (
-        <View key={user.id}>
-          <Text>{user.firstName} {user.lastName}</Text>
-        </View>
-      ))}
+      {sortedUsers.length === 0 ?
+        (<Text>No Users Found !!!</Text>): (
+          sortedUsers.map(user => (
+            <View key={user.id}>
+              <Text>{user.firstName} {user.lastName} with User ID {user.id}</Text>
+            </View>
+          ))
+        )
+      }
     </View>
   );
 };

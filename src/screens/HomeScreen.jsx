@@ -13,8 +13,12 @@ const HomeScreen = ({navigation}) => {
     navigation.navigate('Add User')
   }
 
-  const navigateToViewUsers = () => {
-    navigation.navigate('View Users')
+  const navigateToViewUser = () => {
+    navigation.navigate('View User')
+  }
+
+  const navigateToDeleteUser = () => {
+    navigation.navigate('Delete User')
   }
 
   return (
@@ -28,7 +32,8 @@ const HomeScreen = ({navigation}) => {
           />
           <ClickableButton title="Add an Expense" onPress={navigateToPayment}/>
           <ClickableButton title="Add a User" onPress={navigateToAddUser}/>
-          <ClickableButton title="View all Users" onPress={navigateToViewUsers}/>
+          <ClickableButton title="View all Users" onPress={navigateToViewUser}/>
+          <ClickableButton title="Delete a User" onPress={navigateToDeleteUser}/>
         </View>
       </View>
     </SafeAreaView>
