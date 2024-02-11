@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: 'black',
+    marginBottom: 10,
   },
   safeArea: {
     flex: 1,

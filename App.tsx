@@ -7,13 +7,15 @@ import PaymentScreen from './src/screens/PaymentScreen'
 import CreateUser from './src/screens/CreateUser'
 import ViewUser from './src/screens/ViewUser'
 import DeleteUser from './src/screens/DeleteUser'
+import LoginScreen from './src/screens/LoginScreen'
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Login Page'}} />
         <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Home Page'}} />
         <Stack.Screen name="Payment" component={PaymentScreen} options={{ title: 'Payment Registration Page'}} />
         <Stack.Screen name="Add User" component={CreateUser} options={{ title: 'Create a New User'}} />

@@ -34,13 +34,15 @@ const DeleteUser = ({navigation}) => {
 
     return(
         <View style={styles.container}>
+          <View style={styles.deleteUserForm}>
+
             <Text style={styles.title}>Delete User</Text>
 
             {users.length === 0 ? (
                 <Text>No Users to Delete !!!</Text>
             ) : 
             (
-                <View style={styles.deleteUserForm}>
+                <View style={styles.userForm}>
                     <Picker
                         selectedValue={selectedUserId}
                         onValueChange={(itemValue, itemIndex) => setSelectedUserId(itemValue)}
@@ -56,8 +58,7 @@ const DeleteUser = ({navigation}) => {
                     />
                 </View>
             )}
-
-
+          </View>
         </View>
     );
 };
@@ -67,14 +68,26 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
+      backgroundColor: '#ffb6c1',
     },
     title: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      marginBottom: 10,
+      fontSize: 24,
+    fontWeight: 'bold',
+    color: 'black',
+    marginBottom: 10,
     },
     deleteUserForm: {
-        width: 380,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderColor: 'black',
+      borderWidth: 1,
+      padding: 40,
+      width: 350,
+      margin: 10,
+      backgroundColor: '#e0ffff',
+    },
+    userForm: {
+      width: 300,
     }
   });
 
