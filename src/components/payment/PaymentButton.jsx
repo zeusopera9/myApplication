@@ -1,14 +1,13 @@
-import { Button, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Button, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
+import ClickableButton from '../home/ClickableButton'
 
 const PaymentButton = ({onPress}) => {
   return (
     <View>
       {/* <Text>PaymentButton</Text> */}
       <View style={styles.buttonContainer} >
-      <Pressable style={styles.paymentButton} onPress={onPress} >
-        <Text style={styles.paymentText}>Proceed to Register Payment</Text>
-      </Pressable>
+        <ClickableButton title="Register Payment" onPress={onPress} />
       </View>
     </View>
   )

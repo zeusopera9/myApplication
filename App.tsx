@@ -16,9 +16,9 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Login Page'}} />
-        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Home Page'}} />
+        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Home Page', headerBackTitleVisible: false}} />
         <Stack.Screen name="Payment" component={PaymentScreen} options={{ title: 'Payment Registration Page'}} />
-        <Stack.Screen name="Add User" component={CreateUser} options={{ title: 'Create a New User'}} />
+        <Stack.Screen name="Add User" component={CreateUser} options={{ title: 'Register a User'}} />
         <Stack.Screen name="View User" component={ViewUser} options={{ title: 'View existing Users'}} />
         <Stack.Screen name="Delete User" component={DeleteUser} options={{ title: 'Delete existing Users'}} />
 

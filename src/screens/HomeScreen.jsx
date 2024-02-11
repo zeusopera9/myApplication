@@ -3,15 +3,14 @@ import React from 'react'
 import Details from '../components/home/Details'
 import ClickableButton from '../components/home/ClickableButton'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { Alert, BackHandler } from 'react-native'
+import { useFocusEffect } from '@react-navigation/native'
 
 const HomeScreen = ({navigation}) => {
   const navigateToPayment = () => {
     navigation.navigate('Payment')
   }
 
-  const navigateToAddUser = () => {
-    navigation.navigate('Add User')
-  }
 
   const navigateToViewUser = () => {
     navigation.navigate('View User')
@@ -20,6 +19,36 @@ const HomeScreen = ({navigation}) => {
   const navigateToDeleteUser = () => {
     navigation.navigate('Delete User')
   }
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        Alert.alert(
+          'Exit',
+          'Do you want to exit the app?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => null,
+              style: 'cancel',
+            },
+            {
+              text: 'Exit',
+              onPress: () => BackHandler.exitApp(),
+            },
+          ],
+          { cancelable: false }
+        );
+        return true;
+      };
+
+      // Add event listener for hardware back button
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      // Remove event listener when component is unmounted
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -31,14 +60,13 @@ const HomeScreen = ({navigation}) => {
             familyName="Merchant" 
           />
           <ClickableButton title="Add an Expense" onPress={navigateToPayment}/>
-          <ClickableButton title="Add a User" onPress={navigateToAddUser}/>
           <ClickableButton title="View all Users" onPress={navigateToViewUser}/>
           <ClickableButton title="Delete a User" onPress={navigateToDeleteUser}/>
         </View>
       </View>
     </SafeAreaView>
   )
-}
+};
 
 export default HomeScreen
 

@@ -1,10 +1,22 @@
-import { StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
-import React from 'react'
-import ClickableButton from '../components/home/ClickableButton'
-import Hyperlink from 'react-native-hyperlink'
-
+import { StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import React, { useState } from 'react';
+import ClickableButton from '../components/home/ClickableButton';
+import { useRealm } from '@realm/react';
+import User from '../models/User';
 
 const LoginScreen = ({navigation}) => {
+    const realm = useRealm();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const verifyLogin = () => {
+        const user = realm.objects(User).filtered('username == $0 && password == $1', username, password);
+        if(user.length > 0) {
+            navigation.navigate("Home");
+        } else {
+            alert('Invalid Username or Password. Please try again.');
+        }
+    }
     const navigateToAddUser = () => {
         navigation.navigate('Add User')
       }
@@ -15,26 +27,29 @@ const LoginScreen = ({navigation}) => {
                 <Text style={styles.title}>Login Screen</Text>
             </View>
             <View>
-                <TextInput 
-                    placeholder='Email'
+                <TextInput
+                    placeholder='Username'
                     style={styles.inputBox}
+                    onChangeText={setUsername}
+                    value={username}
                 />
-
-                <TextInput 
+                <TextInput
                     placeholder='Password'
                     style={styles.inputBox}
+                    onChangeText={setPassword}
+                    value={password}
                     secureTextEntry={true}
                 />
 
             </View>
-            <ClickableButton title={"Login"}/>
+            <ClickableButton title={"Login"} onPress={verifyLogin}/>
             <View>
                 <Text>
                     New Here ? Let's Create an Account !
                 </Text>
                 <TouchableWithoutFeedback onPress={navigateToAddUser}>
                     <View style={styles.registerTextContainer}>
-                    <Text style={styles.registerText}>Register</Text>
+                        <Text style={styles.registerText}>Register</Text>
                     </View>
                 </TouchableWithoutFeedback>
             </View>
@@ -81,5 +96,9 @@ const styles = StyleSheet.create({
       registerTextContainer: {
         alignItems: 'center',
         margin: 15,
+      },
+      registerText: {
+        color: 'blue',
+        textDecorationLine: 'underline',
       }
 })
