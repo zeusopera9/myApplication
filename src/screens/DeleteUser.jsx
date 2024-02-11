@@ -1,41 +1,80 @@
-import React, {useState} from "react";
-import { Text, View, TextInput, Button } from 'react-native';
+import React, {useState, useEffect} from "react";
+import { Picker } from "@react-native-picker/picker";
+import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
 import { RealmProvider, useRealm } from "@realm/react";
 import User from "../models/User";
 
 const DeleteUser = () => {
     const realm = useRealm();
-    const [userId, setUserId] = useState('')
+    const [selectedUserId, setSelectedUserId] = useState('');
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+          const allUsers = await realm.objects('User');
+          setUsers(allUsers.map(user => ({ id: user.id, name: user.firstName + ' ' + user.lastName })));
+        };
+
+        fetchData();
+    }, []);
 
     const deleteUser = () => {
         realm.write(() => {
-            const UserToDelete = realm.objectForPrimaryKey('User', userId);
-            if(UserToDelete) {
-                realm.delete(UserToDelete);
-                console.log("User with ID ${userId} has been deleted");
-            } else {
-                console.log("User with ID ${userId} not found");
-            }
+          const userToDelete = realm.objectForPrimaryKey('User', selectedUserId);
+          if (userToDelete) {
+            realm.delete(userToDelete);
+            console.log(`User with ID ${selectedUserId} has been deleted`);
+          } else {
+            console.log(`User with ID ${selectedUserId} not found`);
+          }
         });
-        setUserId('');
-    };
+        setSelectedUserId('');
+      };
 
     return(
-        <View>
-            <Text>Delete User</Text>
+        <View style={styles.container}>
+            <Text style={styles.title}>Delete User</Text>
 
-            <TextInput
-                onChangeText={setUserId}
-                value={userId}
-                placeholder="User ID to delete"
-            />
+            {users.length === 0 ? (
+                <Text>No Users to Delete !!!</Text>
+            ) : 
+            (
+                <View style={styles.deleteUserForm}>
+                    <Picker
+                        selectedValue={selectedUserId}
+                        onValueChange={(itemValue, itemIndex) => setSelectedUserId(itemValue)}
+                    >
+                        <Picker.Item label="Select User" value="" />
+                        {users.map(user => (
+                        <Picker.Item key={user.id} label={user.name} value={user.id} />
+                        ))}
+                    </Picker>
+                    <Button
+                        title="Delete User"
+                        onPress={deleteUser}
+                    />
+                </View>
+            )}
 
-            <Button
-                title="Delete User"
-                onPress={deleteUser}
-            />
+
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    title: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      marginBottom: 10,
+    },
+    deleteUserForm: {
+        width: 380,
+    }
+  });
 
 export default DeleteUser;

@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 import { useRealm } from '@realm/react';
 import User from '../models/User';
 
-const CreateUser = () => {
+const CreateUser = ({navigation}) => {
   const realm = useRealm();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -31,6 +31,7 @@ const CreateUser = () => {
     setPassword('');
     setEmail('');
     setFamilyCode('');
+    navigation.navigate('Home')
   };
   return (
     <View style={styles.container}>
