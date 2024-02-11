@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, Touchable, TouchableOpacity } from 'react-native';
 import { useRealm } from '@realm/react';
 import User from '../models/User';
+import ClickableButton from '../components/home/ClickableButton';
 
 const CreateUser = ({navigation}) => {
   const realm = useRealm();
@@ -34,60 +35,101 @@ const CreateUser = ({navigation}) => {
     navigation.navigate('Home')
   };
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>This is the Create User Screen</Text>
-      <TextInput
-        onChangeText={setFirstName}
-        value={firstName}
-        placeholder="First Name"
-      />
-      <TextInput
-        onChangeText={setLastName}
-        value={lastName}
-        placeholder="Last Name"
-      />
-      <TextInput
-        onChangeText={setUsername}
-        value={username}
-        placeholder="Username"
-      />
-      <TextInput
-        onChangeText={setPassword}
-        value={password}
-        placeholder="Password"
-        secureTextEntry={true}
-      />
-      <TextInput
-        onChangeText={setEmail}
-        value={email}
-        placeholder="Email"
-        keyboardType="email-address"
-      />
-      <TextInput
-        onChangeText={setFamilyCode}
-        value={familyCode}
-        placeholder="Family Code"
-      />
-
-      <Button
-        title="Create User"
-        onPress={createUser}
-      />
+    <View style={styles.safeArea}>
+      <View style={styles.createUserContainer}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Create a User</Text>
+        </View>
+        <View>
+          <TextInput
+            onChangeText={setFirstName}
+            value={firstName}
+            style={styles.inputBox}
+            placeholder="First Name"
+          />
+          <TextInput
+            onChangeText={setLastName}
+            value={lastName}
+            style={styles.inputBox}
+            placeholder="Last Name"
+          />
+          <TextInput
+            onChangeText={setUsername}
+            value={username}
+            style={styles.inputBox}
+            placeholder="Username"
+          />
+          <TextInput
+            onChangeText={setPassword}
+            value={password}
+            style={styles.inputBox}
+            placeholder="Password"
+            secureTextEntry={true}
+          />
+          <TextInput
+            onChangeText={setEmail}
+            value={email}
+            style={styles.inputBox}
+            placeholder="Email"
+            keyboardType="email-address"
+          />
+          <TextInput
+            onChangeText={setFamilyCode}
+            value={familyCode}
+            style={styles.inputBox}
+            placeholder="Family Code"
+          />
+          <ClickableButton onPress={createUser} title="Create User"/>
+        </View>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 10,
+    color: 'black',
   },
+  safeArea: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 8,
+    paddingVertical: 0,
+    backgroundColor: '#ffb6c1',
+  },
+  createUserContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: 'black',
+    borderWidth: 1,
+    padding: 40,
+    width: 350,
+    margin: 10,
+    backgroundColor: '#e0ffff',
+  },
+  inputBox: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 5,
+    padding: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    width: 200,
+    margin: 10,
+  },
+  touchableOpacity: {
+    backgroundColor: 'black',
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 5,
+  }
 });
 
 export default CreateUser;

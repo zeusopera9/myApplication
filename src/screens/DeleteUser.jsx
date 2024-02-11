@@ -4,7 +4,7 @@ import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
 import { RealmProvider, useRealm } from "@realm/react";
 import User from "../models/User";
 
-const DeleteUser = () => {
+const DeleteUser = ({navigation}) => {
     const realm = useRealm();
     const [selectedUserId, setSelectedUserId] = useState('');
     const [users, setUsers] = useState([]);
@@ -29,6 +29,7 @@ const DeleteUser = () => {
           }
         });
         setSelectedUserId('');
+        navigation.navigate("Home");
       };
 
     return(

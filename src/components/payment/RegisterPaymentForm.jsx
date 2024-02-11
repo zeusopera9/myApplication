@@ -15,16 +15,12 @@ const RegisterPaymentForm = () => {
   };
 
   return (
-    <View style={StyleSheet.safeArea}>
+    <View style={styles.safeArea}>
       <View style={styles.headingContainer}>
-        <Text style={styles.headingText}>Register a Payment Here</Text>
+        <Text style={styles.headingText}>Register a Payment</Text>
       </View>
       <View style={styles.formContainer}>
         <Text style={styles.formHeading}>Enter Details</Text>
-        {/* {category !== "Please Select Category" && (
-          <Text>Paying under {category}</Text>
-        )} */}
-
 
         <Text style={styles.inputLabel}>Amount (₹)</Text>
         <TextInput 
@@ -39,6 +35,7 @@ const RegisterPaymentForm = () => {
         <Picker
           selectedValue={category}
           onValueChange={currentCategory => setCategory(currentCategory)}
+          styles={styles.categoryBox}
         >
           {category === 'Please Select Category' && (
             <Picker.Item label="Please Select Category" value="Please Select Category" enabled={false} />
@@ -67,25 +64,21 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   headingContainer: {
-    borderBottomColor: 'red',
-    borderBottomWidth: 2,
-    borderStyle: 'dashed',
+    alignItems: 'center',
     marginBottom: 40,
   },
   formContainer: {
-    
+    backgroundColor: '#e0ffff',
   },
   formHeading: {
     color: 'black',
     textDecorationLine: 'underline',
   },
   safeArea: {
-    flex: 1,
     justifyContent: 'center',
     padding: 8,
-    // borderColor: 'black',
-    // borderWidth: 2,
     paddingVertical: 0,
+    width: 300,
 },
   inputLabel: {
     fontSize: 14,
@@ -99,6 +92,6 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingTop: 5,
     paddingBottom: 5,
-    width: 200, // Adjust width as needed
-  }
+    width: 200,
+  },
 })

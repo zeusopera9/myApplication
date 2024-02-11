@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import RegisterPaymentForm from '../components/payment/RegisterPaymentForm'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -34,10 +34,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 8,
     paddingVertical: 0,
-    marginTop: 5,
+    marginTop: 0,
+    backgroundColor: '#ffb6c1',
   },
   paymentComponentsContainer: {
-    flex: 0.5,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: 'black',
@@ -45,5 +45,6 @@ const styles = StyleSheet.create({
     padding: 20,
     width: 350,
     margin: 10,
-  }
+    backgroundColor: '#e0ffff',
+  },
 })

@@ -7,7 +7,7 @@ const ClickableButton = ({onPress, title}) => {
     <View style={styles.button}>
       <TouchableOpacity 
         onPress={onPress}
-        style={styles.addExpenseButton}
+        style={styles.touchableOpacity}
       >
         <Text style={styles.buttonText}>{title}</Text>
       </TouchableOpacity>
@@ -22,8 +22,8 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 8,
   },
-  addExpenseButton: {
-    backgroundColor: 'white',
+  touchableOpacity: {
+    backgroundColor: 'black',
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 5,
@@ -31,6 +31,6 @@ const styles = StyleSheet.create({
   buttonText: {
     padding: 8,
     fontSize: 16,
-    color: 'black',
+    color: 'white',
   }
 })

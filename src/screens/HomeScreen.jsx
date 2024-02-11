@@ -68,8 +68,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 8,
-    // borderColor: 'black',
-    // borderWidth: 2,
     paddingVertical: 0,
-},
+    backgroundColor: '#ffb6c1',
+  },
 })
