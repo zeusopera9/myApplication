@@ -6,11 +6,11 @@ import User from '../models/User';
 
 const LoginScreen = ({navigation}) => {
     const realm = useRealm();
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const verifyLogin = () => {
-        const user = realm.objects(User).filtered('username == $0 && password == $1', username, password);
+        const user = realm.objects(User).filtered('email == $0 && password == $1', email, password);
         if(user.length > 0) {
             navigation.navigate("Home");
         } else {
@@ -28,10 +28,10 @@ const LoginScreen = ({navigation}) => {
             </View>
             <View>
                 <TextInput
-                    placeholder='Username'
+                    placeholder='Email'
                     style={styles.inputBox}
-                    onChangeText={setUsername}
-                    value={username}
+                    onChangeText={setEmail}
+                    value={email}
                 />
                 <TextInput
                     placeholder='Password'
