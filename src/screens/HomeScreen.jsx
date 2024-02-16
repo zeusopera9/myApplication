@@ -6,11 +6,12 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Alert, BackHandler } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({navigation, route}) => {
+  const { clearSessionCookie } = route.params;
+
   const navigateToPayment = () => {
     navigation.navigate('Payment')
   }
-
 
   const navigateToViewUser = () => {
     navigation.navigate('View User')
@@ -18,6 +19,11 @@ const HomeScreen = ({navigation}) => {
 
   const navigateToDeleteUser = () => {
     navigation.navigate('Delete User')
+  }
+
+  const handleLogout = () => {
+    clearSessionCookie();
+    navigation.navigate('Login')
   }
 
   useFocusEffect(
@@ -62,6 +68,7 @@ const HomeScreen = ({navigation}) => {
           <ClickableButton title="Add an Expense" onPress={navigateToPayment}/>
           <ClickableButton title="View all Users" onPress={navigateToViewUser}/>
           <ClickableButton title="Delete a User" onPress={navigateToDeleteUser}/>
+          <ClickableButton title="Logout" onPress={handleLogout}/>
         </View>
       </View>
     </SafeAreaView>

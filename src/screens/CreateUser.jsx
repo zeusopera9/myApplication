@@ -32,7 +32,7 @@ const CreateUser = ({navigation}) => {
     setPassword('');
     setEmail('');
     setFamilyCode('');
-    navigation.navigate('Home')
+    navigation.navigate('Login')
   };
   return (
     <View style={styles.safeArea}>

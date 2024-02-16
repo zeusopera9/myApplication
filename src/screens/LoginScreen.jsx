@@ -2,12 +2,24 @@ import { StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'rea
 import React, { useState } from 'react';
 import ClickableButton from '../components/home/ClickableButton';
 import { useRealm } from '@realm/react';
+import { AsyncStorage } from '@react-native-async-storage/async-storage';
 import User from '../models/User';
 
 const LoginScreen = ({navigation}) => {
     const realm = useRealm();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    // Setting the session cookie
+    const setSessionCookie = async(user) => {
+      try {
+        await AsyncStorage.setItem('user', JSON.stringify(user));
+      } catch (error) {
+        console.error('Error saving session cookie', error);
+      }
+    };
+
+
 
     const verifyLogin = () => {
         const user = realm.objects(User).filtered('email == $0 && password == $1', email, password);
