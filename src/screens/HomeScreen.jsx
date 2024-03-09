@@ -4,10 +4,11 @@ import Details from '../components/home/Details'
 import ClickableButton from '../components/home/ClickableButton'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Alert, BackHandler } from 'react-native'
-import { useFocusEffect } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
+import auth from '@react-native-firebase/auth';
 
-const HomeScreen = ({navigation, route}) => {
-  const { clearSessionCookie } = route.params;
+const HomeScreen = () => {
+  const navigation = useNavigation();
 
   const navigateToPayment = () => {
     navigation.navigate('Payment')
@@ -22,8 +23,10 @@ const HomeScreen = ({navigation, route}) => {
   }
 
   const handleLogout = () => {
-    clearSessionCookie();
-    navigation.navigate('Login')
+    auth().signOut().then(() => {
+      console.log('User signed out!');
+      navigation.navigate('Login');
+    });
   }
 
   useFocusEffect(

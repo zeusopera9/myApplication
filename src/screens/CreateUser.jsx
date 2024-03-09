@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
-import { StyleSheet, Text, TextInput, View, Button, Touchable, TouchableOpacity } from 'react-native';
-import { useRealm } from '@realm/react';
-import User from '../models/User';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
+import auth from '@react-native-firebase/auth';
 import ClickableButton from '../components/home/ClickableButton';
+import { useNavigation } from '@react-navigation/native';
+import firestore from '@react-native-firebase/firestore';
 
-const CreateUser = ({navigation}) => {
-  const realm = useRealm();
+const CreateUser = () => {
+  const navigation = useNavigation();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
@@ -13,27 +14,45 @@ const CreateUser = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [familyCode, setFamilyCode] = useState('');
 
-  const createUser = () => {
-    realm.write(() => {
-      realm.create('User', {
-        id: Date.now().toString(),
-        firstName: firstName,
-        lastName: lastName,
-        username: username,
-        password: password,
-        email: email,
-        familyCode: familyCode, // Include familyCode in the user object
+  const createUser = async () => {
+    try {
+      // Create user in Firebase Authentication
+      const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+      
+      // Store user data in Firestore
+      await firestore().collection('User').doc(userCredential.user.uid).set({
+        firstName,
+        lastName,
+        username,
+        password,
+        email,
+        familyCode,
       });
-    });
-    // Clear input fields after creating user
-    setFirstName('');
-    setLastName('');
-    setUsername('');
-    setPassword('');
-    setEmail('');
-    setFamilyCode('');
-    navigation.navigate('Login')
+
+      // Clear input fields after creating user
+      setFirstName('');
+      setLastName('');
+      setUsername('');
+      setPassword('');
+      setEmail('');
+      setFamilyCode('');
+      
+      // Navigate to login screen
+      navigation.navigate('Login');
+      
+      console.log('User account created & signed in!');
+    } catch (error) {
+      // Handle error
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('That email address is already in use!');
+      } else if (error.code === 'auth/invalid-email') {
+        console.log('That email address is invalid!');
+      } else {
+        console.error(error);
+      }
+    }
   };
+
   return (
     <View style={styles.safeArea}>
       <View style={styles.createUserContainer}>

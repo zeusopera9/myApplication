@@ -1,74 +1,71 @@
-import { StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableWithoutFeedback, View, Alert } from 'react-native';
 import React, { useState } from 'react';
 import ClickableButton from '../components/home/ClickableButton';
 import { useRealm } from '@realm/react';
-import { AsyncStorage } from '@react-native-async-storage/async-storage';
-import User from '../models/User';
+import { useNavigation } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
 
-const LoginScreen = ({navigation}) => {
-    const realm = useRealm();
+const LoginScreen = () => {
+    const navigation = useNavigation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    // Setting the session cookie
-    const setSessionCookie = async(user) => {
-      try {
-        await AsyncStorage.setItem('user', JSON.stringify(user));
-      } catch (error) {
-        console.error('Error saving session cookie', error);
-      }
+    const verifyLogin = async () => {
+        try {
+            const userCredential = await auth().signInWithEmailAndPassword(email, password);
+            // User authenticated successfully
+            navigation.navigate('Home');
+        } catch (error) {
+            // Handle authentication errors
+            if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                Alert.alert('Invalid Username or Password. Please try again.');
+            } else {
+                Alert.alert('An error occurred. Please try again later.');
+                console.error(error);
+            }
+        }
     };
 
-
-
-    const verifyLogin = () => {
-        const user = realm.objects(User).filtered('email == $0 && password == $1', email, password);
-        if(user.length > 0) {
-            navigation.navigate("Home");
-        } else {
-            alert('Invalid Username or Password. Please try again.');
-        }
-    }
     const navigateToAddUser = () => {
-        navigation.navigate('Add User')
-      }
-    return (
-    <View style={styles.container}>
-        <View style={styles.loginFormContainer}>
-            <View>
-                <Text style={styles.title}>Login Screen</Text>
-            </View>
-            <View>
-                <TextInput
-                    placeholder='Email'
-                    style={styles.inputBox}
-                    onChangeText={setEmail}
-                    value={email}
-                />
-                <TextInput
-                    placeholder='Password'
-                    style={styles.inputBox}
-                    onChangeText={setPassword}
-                    value={password}
-                    secureTextEntry={true}
-                />
+        navigation.navigate('Add User');
+    };
 
-            </View>
-            <ClickableButton title={"Login"} onPress={verifyLogin}/>
-            <View>
-                <Text>
-                    New Here ? Let's Create an Account !
-                </Text>
-                <TouchableWithoutFeedback onPress={navigateToAddUser}>
-                    <View style={styles.registerTextContainer}>
-                        <Text style={styles.registerText}>Register</Text>
-                    </View>
-                </TouchableWithoutFeedback>
+    return (
+        <View style={styles.container}>
+            <View style={styles.loginFormContainer}>
+                <View>
+                    <Text style={styles.title}>Login Screen</Text>
+                </View>
+                <View>
+                    <TextInput
+                        placeholder='Email'
+                        style={styles.inputBox}
+                        onChangeText={setEmail}
+                        value={email}
+                    />
+                    <TextInput
+                        placeholder='Password'
+                        style={styles.inputBox}
+                        onChangeText={setPassword}
+                        value={password}
+                        secureTextEntry={true}
+                    />
+                </View>
+                <ClickableButton title={"Login"} onPress={verifyLogin} />
+                <View>
+                    <Text>
+                        New Here ? Let's Create an Account !
+                    </Text>
+                    <TouchableWithoutFeedback onPress={navigateToAddUser}>
+                        <View style={styles.registerTextContainer}>
+                            <Text style={styles.registerText}>Register</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
             </View>
         </View>
-    </View>
-  )
-}
+    );
+};
 
 export default LoginScreen
 

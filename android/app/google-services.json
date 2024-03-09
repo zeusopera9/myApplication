@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "914392741053",
-    "project_id": "financeapp-67a23",
-    "storage_bucket": "financeapp-67a23.appspot.com"
+    "project_number": "117185300878",
+    "project_id": "financemobileapp-d72d8",
+    "storage_bucket": "financemobileapp-d72d8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:914392741053:android:8e2cac6dd492e073af73d4",
+        "mobilesdk_app_id": "1:117185300878:android:e4d6c30cbee40158ef3cdf",
         "android_client_info": {
           "package_name": "com.myapplication"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCDVCOMiugKYOrIt8uUKyjeh9JNb44Hj9U"
+          "current_key": "AIzaSyDwz5NH1yriTvhx4gWpa75eN65iMFMERyA"
         }
       ],
       "services": {
