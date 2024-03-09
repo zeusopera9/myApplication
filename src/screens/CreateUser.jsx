@@ -27,6 +27,7 @@ const CreateUser = () => {
         password,
         email,
         familyCode,
+        head: false,
       });
 
       // Clear input fields after creating user

@@ -1,14 +1,16 @@
 import { Button, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Details from '../components/home/Details'
 import ClickableButton from '../components/home/ClickableButton'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Alert, BackHandler } from 'react-native'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+  const [isHead, setIsHead] = useState(false);
 
   const navigateToPayment = () => {
     navigation.navigate('Payment')
@@ -28,6 +30,20 @@ const HomeScreen = () => {
       navigation.navigate('Login');
     });
   }
+
+  useEffect(() => {
+    const unsubscribe = firestore().collection('User').doc(auth().currentUser.uid)
+      .onSnapshot(snapshot => {
+        const userData = snapshot.data();
+        if (userData && userData.head === true) {
+          setIsHead(true);
+        } else {
+          setIsHead(false);
+        }
+      });
+
+    return () => unsubscribe();
+  }, []);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -70,7 +86,7 @@ const HomeScreen = () => {
           />
           <ClickableButton title="Add an Expense" onPress={navigateToPayment}/>
           <ClickableButton title="View all Users" onPress={navigateToViewUser}/>
-          <ClickableButton title="Delete a User" onPress={navigateToDeleteUser}/>
+          {isHead && <ClickableButton title="Delete a User" onPress={navigateToDeleteUser}/>}
           <ClickableButton title="Logout" onPress={handleLogout}/>
         </View>
       </View>
