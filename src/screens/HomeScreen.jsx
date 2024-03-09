@@ -11,6 +11,7 @@ import firestore from '@react-native-firebase/firestore';
 const HomeScreen = () => {
   const navigation = useNavigation();
   const [isHead, setIsHead] = useState(false);
+  const [userData, setUserData] = useState(null);
 
   const navigateToPayment = () => {
     navigation.navigate('Payment')
@@ -35,10 +36,15 @@ const HomeScreen = () => {
     const unsubscribe = firestore().collection('User').doc(auth().currentUser.uid)
       .onSnapshot(snapshot => {
         const userData = snapshot.data();
-        if (userData && userData.head === true) {
-          setIsHead(true);
+        if (userData) {
+          setUserData(userData);
+          if(userData && userData.head === true) {
+            setIsHead(true);
+          } else {
+            setIsHead(false);
+          }
         } else {
-          setIsHead(false);
+          setUserData(null);
         }
       });
 
@@ -80,10 +86,10 @@ const HomeScreen = () => {
       <View style={styles.container}>
         <View style={styles.containerInfo}>
           <Text style={styles.title}>This is Your Home Page !!!</Text>
-          <Details 
-            userName="Zaidali" 
-            familyName="Merchant" 
-          />
+          {userData && <Details 
+            userName={userData.firstName}
+            familyName={userData.familyCode}
+          />}
           <ClickableButton title="Add an Expense" onPress={navigateToPayment}/>
           <ClickableButton title="View all Users" onPress={navigateToViewUser}/>
           {isHead && <ClickableButton title="Delete a User" onPress={navigateToDeleteUser}/>}

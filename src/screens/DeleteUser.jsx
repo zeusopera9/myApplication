@@ -1,48 +1,72 @@
 import React, {useState, useEffect} from "react";
+import { Text, View, Button, StyleSheet } from 'react-native';
 import { Picker } from "@react-native-picker/picker";
-import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
-import { RealmProvider, useRealm } from "@realm/react";
-import User from "../models/User";
+import { useNavigation } from "@react-navigation/native";
+import auth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 
 const DeleteUser = () => {
     const navigation = useNavigation();
-    const realm = useRealm();
     const [selectedUserId, setSelectedUserId] = useState('');
     const [users, setUsers] = useState([]);
+    const [currentUserFamilyCode, setCurrentUserFamilyCode] = useState(null);
 
     useEffect(() => {
-        const fetchData = async () => {
-          const allUsers = await realm.objects('User');
-          setUsers(allUsers.map(user => ({ id: user.id, name: user.firstName + ' ' + user.lastName })));
-        };
-
-        fetchData();
-    }, []);
-
-    const deleteUser = () => {
-        realm.write(() => {
-          const userToDelete = realm.objectForPrimaryKey('User', selectedUserId);
-          if (userToDelete) {
-            realm.delete(userToDelete);
-            console.log(`User with ID ${selectedUserId} has been deleted`);
-          } else {
-            console.log(`User with ID ${selectedUserId} not found`);
+      const fetchFamilyCode = async () => {
+        try {
+          const userDoc = await firestore().collection('User').doc(auth().currentUser.uid).get();
+          const userData = userDoc.data();
+          if (userData) {
+            setCurrentUserFamilyCode(userData.familyCode);
           }
-        });
-        setSelectedUserId('');
-        navigation.navigate("Home");
+        } catch (error) {
+          console.error('Error fetching family code:', error);
+        }
       };
+  
+      fetchFamilyCode();
+    }, []);
+  
+    useEffect(() => {
+      if (currentUserFamilyCode) {
+        const fetchUsers = async () => {
+          try {
+            const querySnapshot = await firestore()
+              .collection('User')
+              .where('familyCode', '==', currentUserFamilyCode)
+              .get();
+            const fetchedUsers = querySnapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+            setUsers(fetchedUsers);
+          } catch (error) {
+            console.error('Error fetching users:', error);
+          }
+        };
+  
+        fetchUsers();
+      }
+    }, [currentUserFamilyCode]);
+
+    const deleteUser = async () => {
+      try {
+          await firestore().collection('User').doc(selectedUserId).delete();
+          console.log(`User with ID ${selectedUserId} has been deleted`);
+          setSelectedUserId('');
+          navigation.navigate("Home");
+      } catch (error) {
+          console.error("Error Deleting User: ", error);
+      }
+    };
 
     return(
         <View style={styles.container}>
           <View style={styles.deleteUserForm}>
-
             <Text style={styles.title}>Delete User</Text>
-
             {users.length === 0 ? (
                 <Text>No Users to Delete !!!</Text>
-            ) : 
-            (
+            ) : (
                 <View style={styles.userForm}>
                     <Picker
                         selectedValue={selectedUserId}
@@ -50,7 +74,7 @@ const DeleteUser = () => {
                     >
                         <Picker.Item label="Select User" value="" />
                         {users.map(user => (
-                        <Picker.Item key={user.id} label={user.name} value={user.id} />
+                        <Picker.Item key={user.id} label={user.firstName + ' ' + user.lastName} value={user.id} />
                         ))}
                     </Picker>
                     <Button
