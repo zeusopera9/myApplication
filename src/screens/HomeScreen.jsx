@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Details from '../components/home/Details'
 import ClickableButton from '../components/home/ClickableButton'

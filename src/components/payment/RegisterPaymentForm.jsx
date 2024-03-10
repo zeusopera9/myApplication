@@ -1,8 +1,12 @@
-import { StyleSheet, Text, View, TextInput } from 'react-native'
-import React, { useState } from 'react'
-import { Picker } from '@react-native-picker/picker'
+import { Button, StyleSheet, Text, View, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { Picker } from '@react-native-picker/picker';
+import firestore from '@react-native-firebase/firestore';
+import firebase from '@react-native-firebase/app';
+import { useNavigation } from '@react-navigation/native';
 
 const RegisterPaymentForm = () => {
+  const navigation = useNavigation();
   const [category, setCategory] = useState('Please Select Category');
   const [amount, setAmount] = useState('');
   const [isValidAmount, setIsValidAmount] = useState(true);
@@ -14,6 +18,29 @@ const RegisterPaymentForm = () => {
     setAmount(numericValue);
   };
 
+  const handleSubmit = async () => {
+    if (!isValidAmount || category === 'Please Select Category') {
+      return;
+    }
+
+    try {
+      const uid = firebase.auth().currentUser.uid;
+      const expenseRef = firestore().collection('Expense').doc(); // Create a new document reference with a unique ID
+      await expenseRef.set({ // Set document data including UID
+        uid: uid,
+        amount: parseInt(amount),
+        category: category,
+        date: firebase.firestore.FieldValue.serverTimestamp(),
+        mode: 'Cash',
+      });
+      setAmount('');
+      setCategory('Please Select Category');
+      navigation.navigate("Home");
+    } catch (error) {
+      console.error('Error adding expense:', error);
+    }
+  };
+
   return (
     <View style={styles.safeArea}>
       <View style={styles.headingContainer}>
@@ -21,7 +48,6 @@ const RegisterPaymentForm = () => {
       </View>
       <View style={styles.formContainer}>
         <Text style={styles.formHeading}>Enter Details</Text>
-
         <Text style={styles.inputLabel}>Amount (₹)</Text>
         <TextInput 
           placeholder='Enter Amount Here' 
@@ -50,6 +76,7 @@ const RegisterPaymentForm = () => {
         {category !== "Please Select Category" && (
           <Text>Selected: {category}</Text>
         )}
+        <Button title="Submit" onPress={handleSubmit} />
       </View>
     </View>
   )

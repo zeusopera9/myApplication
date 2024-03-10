@@ -14,7 +14,6 @@ const PaymentScreen = ({navigation}) => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.paymentComponentsContainer}>
         <RegisterPaymentForm />
-        <PaymentButton onPress={onPress} />
       </View>
     </SafeAreaView>
   )

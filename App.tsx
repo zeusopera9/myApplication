@@ -7,12 +7,10 @@ import CreateUser from './src/screens/CreateUser'
 import ViewUser from './src/screens/ViewUser'
 import DeleteUser from './src/screens/DeleteUser'
 import LoginScreen from './src/screens/LoginScreen'
-import firestore from '@react-native-firebase/firestore';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  firestore();
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
