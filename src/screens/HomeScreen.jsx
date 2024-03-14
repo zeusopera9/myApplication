@@ -91,7 +91,7 @@ const HomeScreen = () => {
             userName={userData.firstName}
             familyName={userData.familyCode}
           />}
-          <UsersToggle />
+          {isHead && <UsersToggle />}
           <View style={styles.buttonContainer}>
             <ClickableButton title="Add an Expense" onPress={navigateToPayment} />
             <ClickableButton title="View all Users" onPress={navigateToViewUser} />
