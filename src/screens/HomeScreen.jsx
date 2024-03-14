@@ -7,6 +7,7 @@ import { Alert, BackHandler } from 'react-native'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import UsersToggle from '../components/home/UsersToggle'
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -90,10 +91,13 @@ const HomeScreen = () => {
             userName={userData.firstName}
             familyName={userData.familyCode}
           />}
-          <ClickableButton title="Add an Expense" onPress={navigateToPayment}/>
-          <ClickableButton title="View all Users" onPress={navigateToViewUser}/>
-          {isHead && <ClickableButton title="Delete a User" onPress={navigateToDeleteUser}/>}
-          <ClickableButton title="Logout" onPress={handleLogout}/>
+          <UsersToggle />
+          <View style={styles.buttonContainer}>
+            <ClickableButton title="Add an Expense" onPress={navigateToPayment} />
+            <ClickableButton title="View all Users" onPress={navigateToViewUser} />
+            {isHead && <ClickableButton title="Delete a User" onPress={navigateToDeleteUser} />}
+            <ClickableButton title="Logout" onPress={handleLogout} />
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -130,5 +134,11 @@ const styles = StyleSheet.create({
     padding: 8,
     paddingVertical: 0,
     backgroundColor: '#ffb6c1',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    width: '100%',
   },
 })
