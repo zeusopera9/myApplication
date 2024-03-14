@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, TextInput, View, ActivityIndicator, Alert } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import ClickableButton from '../components/home/ClickableButton';
 import { useNavigation } from '@react-navigation/native';
@@ -13,44 +13,81 @@ const CreateUser = () => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [familyCode, setFamilyCode] = useState('');
+  const [isEnabled, setIsEnabled] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchToggleState = async () => {
+      try {
+        const querySnapshot = await firestore()
+          .collection('FamilyCodes')
+          .where('familyCode', '==', familyCode)
+          .get();
+
+        if (!querySnapshot.empty) {
+          const doc = querySnapshot.docs[0];
+          const data = doc.data();
+          setIsEnabled(data.allowJoining); // Set the state based on Firestore data
+          if(!isEnabled) {
+            // console.log('Not Allowed to join. Contact Family Head');
+            Alert.alert(
+              'Joining Disabled',
+              'Joining this family is currently disabled. Please contact Family Head',
+              [{ text: 'OK' }]
+            );
+          }
+        } else {
+          console.log('Family does not exist');
+        }
+      } catch (error) {
+        console.error('Error fetching document:', error);
+        setError('Error fetching document');
+      }
+    };
+
+    if (familyCode) {
+      fetchToggleState();
+    }
+  }, [familyCode]);
 
   const createUser = async () => {
     try {
-      // Create user in Firebase Authentication
-      const userCredential = await auth().createUserWithEmailAndPassword(email, password);
-      
-      // Store user data in Firestore
-      await firestore().collection('User').doc(userCredential.user.uid).set({
-        firstName,
-        lastName,
-        username,
-        password,
-        email,
-        familyCode,
-        head: false,
-      });
-
-      // Clear input fields after creating user
-      setFirstName('');
-      setLastName('');
-      setUsername('');
-      setPassword('');
-      setEmail('');
-      setFamilyCode('');
-      
-      // Navigate to login screen
-      navigation.navigate('Login');
-      
-      console.log('User account created & signed in!');
+      setLoading(true);
+      if (isEnabled) {
+        // Create user in Firebase Authentication
+        const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+        
+        // Store user data in Firestore
+        await firestore().collection('User').doc(userCredential.user.uid).set({
+          firstName,
+          lastName,
+          username,
+          password,
+          email,
+          familyCode,
+          head: false,
+        });
+  
+        // Clear input fields after creating user
+        setFirstName('');
+        setLastName('');
+        setUsername('');
+        setPassword('');
+        setEmail('');
+        setFamilyCode('');
+        
+        // Navigate to login screen
+        navigation.navigate('Login');
+        
+        console.log('User account created & signed in!');
+      }
     } catch (error) {
       // Handle error
-      if (error.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
-      } else if (error.code === 'auth/invalid-email') {
-        console.log('That email address is invalid!');
-      } else {
-        console.error(error);
-      }
+      setError(error.message);
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -99,7 +136,12 @@ const CreateUser = () => {
             style={styles.inputBox}
             placeholder="Family Code"
           />
-          <ClickableButton onPress={createUser} title="Create User"/>
+          {loading ? (
+            <ActivityIndicator size="large" color="#0000ff" />
+          ) : (
+            <ClickableButton onPress={createUser} title="Create User"/>
+          )}
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
         </View>
       </View>
     </View>
@@ -145,11 +187,9 @@ const styles = StyleSheet.create({
     width: 200,
     margin: 10,
   },
-  touchableOpacity: {
-    backgroundColor: 'black',
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 5,
+  errorText: {
+    color: 'red',
+    marginTop: 10,
   }
 });
 
