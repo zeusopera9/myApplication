@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Switch } from 'react-native';
+import { View, Text, Switch, ActivityIndicator } from 'react-native';
 import { StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 const UsersToggle = () => {
-    const [isEnabled, setIsEnabled] = useState(false);
+    const [isEnabled, setIsEnabled] = useState(null); // Change initial state to null
     const [currentUserFamilyCode, setCurrentUserFamilyCode] = useState(null);
+    const [loading, setLoading] = useState(true); // Add loading state
 
     // Function to toggle the switch and update Firestore
     const toggleSwitch = async () => {
@@ -45,20 +46,22 @@ const UsersToggle = () => {
     useEffect(() => {
         const fetchToggleState = async () => {
             try {
-                const querySnapshot = await firestore()
-                    .collection('FamilyCodes')
-                    .where('familyCode', '==', currentUserFamilyCode)
-                    .get();
+                const docSnapshot = await firestore()
+                .collection('FamilyCodes')
+                .doc(currentUserFamilyCode)
+                .get();
 
-                if (!querySnapshot.empty) {
-                    const doc = querySnapshot.docs[0];
-                    const data = doc.data();
+                if (docSnapshot.exists) {
+                    const data = docSnapshot.data();
                     setIsEnabled(data.allowJoining); // Set the state based on Firestore data
                 } else {
                     console.log('No matching document found!');
+                    setIsEnabled(false); // Set default state when no matching document is found
                 }
             } catch (error) {
                 console.error('Error fetching document:', error);
+            } finally {
+                setLoading(false); // Update loading state once fetching is complete
             }
         };
 
@@ -67,6 +70,16 @@ const UsersToggle = () => {
         }
     }, [currentUserFamilyCode]);
 
+    // Render loading indicator if data is still being fetched
+    if (loading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
+    }
+
+    // Render toggle switch once data is fetched
     return (
         <View>
             <Text style={styles.toggleText}>Allow Users to Join your Family</Text>
@@ -91,6 +104,11 @@ const styles = StyleSheet.create({
         color: 'black',
     },
     toggleContainer: {
+        alignItems: 'center',
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
     },
 });

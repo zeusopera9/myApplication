@@ -16,21 +16,20 @@ const CreateUser = () => {
   const [isEnabled, setIsEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [familyExists, setFamilyExists] = useState(false);
 
   useEffect(() => {
     const fetchToggleState = async () => {
       try {
         const querySnapshot = await firestore()
           .collection('FamilyCodes')
-          .where('familyCode', '==', familyCode)
+          .doc(familyCode)
           .get();
 
-        if (!querySnapshot.empty) {
-          const doc = querySnapshot.docs[0];
-          const data = doc.data();
-          setIsEnabled(data.allowJoining); // Set the state based on Firestore data
-          if(!isEnabled) {
-            // console.log('Not Allowed to join. Contact Family Head');
+        if (querySnapshot.exists) {
+          setFamilyExists(true);
+          setIsEnabled(querySnapshot.data().allowJoining); // Set the state based on Firestore data
+          if (!querySnapshot.data().allowJoining) {
             Alert.alert(
               'Joining Disabled',
               'Joining this family is currently disabled. Please contact Family Head',
@@ -38,6 +37,7 @@ const CreateUser = () => {
             );
           }
         } else {
+          setFamilyExists(false);
           console.log('Family does not exist');
         }
       } catch (error) {
@@ -54,7 +54,8 @@ const CreateUser = () => {
   const createUser = async () => {
     try {
       setLoading(true);
-      if (isEnabled) {
+      // Check if the family exists and joining is enabled
+      if (isEnabled && familyExists) {
         // Create user in Firebase Authentication
         const userCredential = await auth().createUserWithEmailAndPassword(email, password);
         
@@ -81,6 +82,45 @@ const CreateUser = () => {
         navigation.navigate('Login');
         
         console.log('User account created & signed in!');
+      } else {
+        // Check if family code exists before trying to create the user
+        if (!familyExists) {
+          // Create a new document in the FamilyCodes collection
+          await createFamilyCodeDocument();
+          // Create user in Firebase Authentication
+          const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+          
+          // Store user data in Firestore
+          await firestore().collection('User').doc(userCredential.user.uid).set({
+            firstName,
+            lastName,
+            username,
+            password,
+            email,
+            familyCode,
+            head: false,
+          });
+    
+          // Clear input fields after creating user
+          setFirstName('');
+          setLastName('');
+          setUsername('');
+          setPassword('');
+          setEmail('');
+          setFamilyCode('');
+          
+          // Navigate to login screen
+          navigation.navigate('Login');
+          
+          console.log('User account created & signed in!');
+          
+        } else {
+          Alert.alert(
+            'Joining Disabled',
+            'Joining this family is currently disabled. Please contact Family Head',
+            [{ text: 'OK' }]
+          );
+        }
       }
     } catch (error) {
       // Handle error
@@ -88,6 +128,22 @@ const CreateUser = () => {
       console.error(error);
     } finally {
       setLoading(false);
+    }
+  };  
+
+  const createFamilyCodeDocument = async () => {
+    try {
+      // Create a new document in the FamilyCodes collection
+      await firestore().collection('FamilyCodes').doc(familyCode).set({
+        allowJoining: true,
+      });
+      console.log('Family code document created');
+
+      // Set familyExists to true after successfully creating the family code document
+      setFamilyExists(true);
+    } catch (error) {
+      console.error('Error creating family code document:', error);
+      setError('Error creating family code document');
     }
   };
 
