@@ -86,7 +86,7 @@ const HomeScreen = () => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <View style={styles.containerInfo}>
-          <Text style={styles.title}>This is Your Home Page !!!</Text>
+          <Text style={styles.title}>Personal Finance Application</Text>
           {userData && <Details 
             userName={userData.firstName}
             familyName={userData.familyCode}
@@ -133,12 +133,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 8,
     paddingVertical: 0,
-    backgroundColor: '#ffb6c1',
+    backgroundColor: '#F3D3BD',
   },
   buttonContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     width: '100%',
   },
 })

@@ -9,7 +9,7 @@ const Details = (props) => {
             Family: {props.familyName}
         </Text>
         <Text style={styles.descriptionText}>
-            This app has been made to allow you to register your payments to populate the database.
+            Handheld device expense registration app
         </Text>
     </View>
   )

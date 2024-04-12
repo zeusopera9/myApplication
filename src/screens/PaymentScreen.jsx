@@ -7,8 +7,6 @@ import PaymentButton from '../components/payment/PaymentButton'
 const PaymentScreen = ({navigation}) => {
   const onPress = () => {
     navigation.navigate("Home")
-    // Change this to payment confirmation
-    // After adding Verification feature
   }
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -34,7 +32,7 @@ const styles = StyleSheet.create({
     padding: 8,
     paddingVertical: 0,
     marginTop: 0,
-    backgroundColor: '#ffb6c1',
+    backgroundColor: '#F3D3BD',
   },
   paymentComponentsContainer: {
     justifyContent: 'center',
@@ -44,6 +42,6 @@ const styles = StyleSheet.create({
     padding: 20,
     width: 350,
     margin: 10,
-    backgroundColor: '#e0ffff',
+    backgroundColor: '#FCFAF9',
   },
 })

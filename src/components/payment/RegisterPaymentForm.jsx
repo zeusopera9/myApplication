@@ -46,7 +46,7 @@ const RegisterPaymentForm = () => {
       <View style={styles.headingContainer}>
         <Text style={styles.headingText}>Register a Payment</Text>
       </View>
-      <View style={styles.formContainer}>
+      <View>
         <Text style={styles.formHeading}>Enter Details</Text>
         <Text style={styles.inputLabel}>Amount (₹)</Text>
         <TextInput 
@@ -76,7 +76,11 @@ const RegisterPaymentForm = () => {
         {category !== "Please Select Category" && (
           <Text>Selected: {category}</Text>
         )}
-        <Button title="Submit" onPress={handleSubmit} />
+        <Button 
+          title="Submit"
+          color="#333333" 
+          onPress={handleSubmit} 
+        />
       </View>
     </View>
   )
@@ -93,9 +97,6 @@ const styles = StyleSheet.create({
   headingContainer: {
     alignItems: 'center',
     marginBottom: 40,
-  },
-  formContainer: {
-    backgroundColor: '#e0ffff',
   },
   formHeading: {
     color: 'black',

@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 8,
     paddingVertical: 0,
-    backgroundColor: '#ffb6c1',
+    backgroundColor: '#F3D3BD',
   },
   createUserContainer: {
     justifyContent: 'center',
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     padding: 40,
     width: 350,
     margin: 10,
-    backgroundColor: '#e0ffff',
+    backgroundColor: '#FCFAF9',
   },
   inputBox: {
     borderWidth: 1,

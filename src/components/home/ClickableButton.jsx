@@ -20,10 +20,9 @@ export default ClickableButton
 const styles = StyleSheet.create({
   button: {
     margin: 10,
-    padding: 8,
   },
   touchableOpacity: {
-    backgroundColor: 'black',
+    backgroundColor: '#333333',
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 5,

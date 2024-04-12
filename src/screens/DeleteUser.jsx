@@ -79,6 +79,7 @@ const DeleteUser = () => {
                     </Picker>
                     <Button
                         title="Delete User"
+                        color="#333333"
                         onPress={deleteUser}
                     />
                 </View>
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#ffb6c1',
+      backgroundColor: '#F3D3BD',
     },
     title: {
       fontSize: 24,
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
       padding: 40,
       width: 350,
       margin: 10,
-      backgroundColor: '#e0ffff',
+      backgroundColor: '#FCFAF9',
     },
     userForm: {
       width: 300,
