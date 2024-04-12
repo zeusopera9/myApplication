@@ -93,8 +93,8 @@ const HomeScreen = () => {
           />}
           {isHead && <UsersToggle />}
           <View style={styles.buttonContainer}>
-            <ClickableButton title="Add an Expense" onPress={navigateToPayment} />
-            <ClickableButton title="View all Users" onPress={navigateToViewUser} />
+            <ClickableButton title="Add an Expense" onPress={() => {navigation.navigate("Payment")}} />
+            <ClickableButton title="View all Users" onPress={() => {navigation.navigate("View User")}} />
             {isHead && <ClickableButton title="Delete a User" onPress={navigateToDeleteUser} />}
             <ClickableButton title="Logout" onPress={handleLogout} />
           </View>

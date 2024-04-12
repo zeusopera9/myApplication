@@ -7,6 +7,7 @@ import CreateUser from './src/screens/CreateUser'
 import ViewUser from './src/screens/ViewUser'
 import DeleteUser from './src/screens/DeleteUser'
 import LoginScreen from './src/screens/LoginScreen'
+import ExpenseVerificationScreen from './src/screens/ExpenseVerificationScreen'
 
 const Stack = createNativeStackNavigator();
 
@@ -20,7 +21,6 @@ const App = () => {
         <Stack.Screen name="Add User" component={CreateUser} options={{ title: 'Register a User', headerShown: false}} />
         <Stack.Screen name="View User" component={ViewUser} options={{ title: 'View existing Users', headerShown: false}} />
         <Stack.Screen name="Delete User" component={DeleteUser} options={{ title: 'Delete existing Users', headerShown: false}} />
-
       </Stack.Navigator>
     </NavigationContainer>
   );
